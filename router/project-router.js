@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('./project-helpers');
+const addTaskDb = require('./tasks-helper');
 
 const router = express.Router();
 
@@ -43,9 +44,9 @@ router.post('/', (req, res) => {
 		});
 });
 
-router.post('/:id/tasks', (req, res) => {
+router.post('/tasks/:id', (req, res) => {
 	req.body.project_id = req.params.id;
-	db
+	addTaskDb
 		.addTask(req.body)
 		.then((response) => {
 			res.status(201).json({ TaskID: response });
