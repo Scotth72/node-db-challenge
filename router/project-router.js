@@ -25,4 +25,34 @@ router.get('/:id', (req, res) => {
 		});
 });
 
+router.post('/', (req, res) => {
+	db
+		.addProject(req.body)
+		.then(() => {
+			db
+				.getProjects()
+				.then((response) => {
+					res.status(201).json(response);
+				})
+				.catch((error) => {
+					res.status(500).json(error.message);
+				});
+		})
+		.catch((error) => {
+			res.status(500).json(error.message);
+		});
+});
+
+router.post('/:id/tasks', (req, res) => {
+	req.body.project_id = req.params.id;
+	db
+		.addTask(req.body)
+		.then((response) => {
+			res.status(201).json({ TaskID: response });
+		})
+		.catch((error) => {
+			res.status(500).json(error.message);
+		});
+});
+
 module.exports = router;
